@@ -1,25 +1,20 @@
-/* Requires the Docker Pipeline plugin */
 pipeline {
-    agent any
-    stages {
-        stage('build') {
-            steps {
-                sh """
-                    echo "This is build"
-                """
-            }
-        stage('test') {
-            steps {
-                sh """
-                    echo "This is test"
-                """
-            }
-        stage('build') {
-            steps {
-                sh """
-                    echo "This is build"
-                """
-            }
-        }
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        echo 'This is Build.'
+      }
     }
+    stage('Test') {
+      steps {
+        echo 'This is Running Test.'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        echo 'This is Deploying.'
+      }
+    }
+  }
 }
