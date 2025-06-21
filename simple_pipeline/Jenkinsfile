@@ -1,31 +1,48 @@
 pipeline {
-   agent { label 'AGENT-01' }
-  stages {
-    stage('Build') {
-      steps {
-        echo 'This is Build.'
-      }
+    agent { label 'AGENT-01' }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                  sh """
+                    echo 'This is Build.'
+                """
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                  sh """
+                    echo 'This is Running Test.'
+                """
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+
+                  sh """
+                    echo 'This is Deploying.'
+                """
+                }
+            }
+        }
     }
-    stage('Test') {
-      steps {
-        echo 'This is Running Test.'
-      }
-    }
-    stage('Deploy') {
-      steps {
-        echo 'This is Deploying.'
-      }
-    }
-  }
-   post { 
-        always { 
+
+    post {
+        always {
             echo 'I will always say Hello again!'
         }
-        failure { 
-            echo 'I will run when pipline failure!'
+        success {
+            echo 'I will run when pipeline success!'
         }
-        success { 
-            echo 'I will run when pipline success!'
+        failure {
+            echo 'I will run when pipeline failure!'
         }
     }
 }
