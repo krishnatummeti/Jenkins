@@ -23,7 +23,7 @@ pipeline {
                 script {
                   sh """
                     echo 'This is Running Test.'
-                    ehco 'Project: $client'
+                    echo 'Project: $client'
                 """
                 }
             }
