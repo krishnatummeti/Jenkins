@@ -5,7 +5,9 @@ pipeline {
         project = 'Health checks for DB and Apps'
         server    = 'Test'
     }
-
+    options { 
+        disableConcurrentBuilds() 
+    }
     stages {
         stage('Build') {
             steps {
