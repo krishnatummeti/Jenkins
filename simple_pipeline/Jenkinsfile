@@ -15,6 +15,7 @@ pipeline {
                   sh """
                     echo 'This is Build.'
                     echo 'Client : $client '
+                    sleep 10
                 """
                 }
             }
