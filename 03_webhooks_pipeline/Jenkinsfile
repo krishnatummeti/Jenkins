@@ -41,6 +41,17 @@ pipeline {
                 }
             }
         }
+        stage('Post-Deploy') {
+            steps {
+                script {
+
+                  sh """
+                    echo 'This is Post-Deploying.'
+                    echo 'ServerL: $server'
+                """
+                }
+            }
+        }
     }
 
     post {
