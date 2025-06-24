@@ -37,17 +37,7 @@ pipeline {
                   sh """
                     echo 'This is Deploying.'
                     echo 'ServerL: $server'
-                """
-                }
-            }
-        }
-        stage('Post-Deploy') {
-            steps {
-                script {
-
-                  sh """
-                    echo 'This is Post-Deploying.'
-                    echo 'ServerL: $server'
+                    ehco 'test the server post validations'
                 """
                 }
             }
