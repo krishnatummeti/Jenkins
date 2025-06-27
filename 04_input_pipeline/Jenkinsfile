@@ -20,6 +20,7 @@ pipeline {
                 }
             }
         }
+
         stage('Test') {
             steps {
                 script {
@@ -33,11 +34,11 @@ pipeline {
 
         stage('Deploy') {
             input {
-                message "Should we continue?"
-                ok "Yes, we should."
+                message "Should we continue the Deploy?"
+                ok "Yes."
                 submitter "devuser"
                 parameters {
-                    string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                    string(name: 'PERSON', defaultValue: 'DevOps Admin', description: 'Can you please confirm?')
                 }
             }
             steps {
