@@ -20,14 +20,12 @@ pipeline {
                 }
             }
         }
-
         stage('Test') {
             steps {
                 script {
                     sh """
                         echo 'This is Running Test.'
                         echo 'Project: ${env.project}'
-                        sleep 15
                     """
                 }
             }
@@ -49,6 +47,7 @@ pipeline {
                         echo 'This is Deploying.'
                         echo 'Hello, ${person}'
                         echo 'Server: ${env.server}'
+                        sleep 15
                         echo 'Test the server post validations'
                     """
                 }
