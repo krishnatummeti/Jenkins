@@ -1,9 +1,10 @@
 pipeline {
     agent { label 'AGENT-01' }
     environment {
-        client = 'TECH Base Hub'
+        client  = 'TECH Base Hub'
         project = 'Health checks for DB and Apps'
-        server    = 'Test'
+        server  = 'Test'
+        authore = 'Mr Krishna'
     }
     options { 
         disableConcurrentBuilds() 
@@ -12,45 +13,49 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                  sh """
-                    echo 'This is Build.'
-                    echo 'Client : $client '
-                """
+                    sh """
+                        echo 'This is Build.'
+                        echo 'Client : ${env.client}'
+                    """
                 }
             }
         }
+
         stage('Test') {
             steps {
                 script {
-                  sh """
-                    echo 'This is Running Test.'
-                    echo 'Project: $client'
-                    sleep 15
-                """
+                    sh """
+                        echo 'This is Running Test.'
+                        echo 'Project: ${env.project}'
+                        sleep 15
+                    """
                 }
             }
         }
+
         stage('Deploy') {
             input {
                 message "Should we continue?"
                 ok "Yes, we should."
-                submitter "alice,bob"
+                submitter "devuser"
                 parameters {
                     string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
                 }
             }
             steps {
                 script {
-
-                  sh """
-                    echo 'This is Deploying.'
-                    echo 'ServerL: $server'
-                    echo 'test the server post validations'
-                """
+                    def person = params.PERSON
+                    sh """
+                        echo 'This is Deploying.'
+                        echo 'Hello, ${person}'
+                        echo 'Server: ${env.server}'
+                        echo 'Test the server post validations'
+                    """
                 }
             }
         }
     }
+
     post {
         success {
             echo 'I will run when pipeline success!'
