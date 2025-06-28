@@ -1,4 +1,11 @@
 
-# Set webhooks ---> trigger
-Whenever a developer pushes code to GitHub, it should automatically trigger a build. 
-Changes will be in the git hub and jenkins 
+# when
+
+#  This stage will only execute if the environment variable DEPLOY_TO is exactly 'production' 
+when {
+    allOf {
+        environment name: 'DEPLOY_TO', value: 'production'
+    }
+}
+
+-----------------------------------------------------------------------------------------------
