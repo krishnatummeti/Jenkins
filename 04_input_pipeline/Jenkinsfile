@@ -5,6 +5,7 @@ pipeline {
         project = 'Health checks for DB and Apps'
         server  = 'Test'
         authore = 'Mr Krishna'
+        DEPLOY_TO = 'Dev'
     }
     options { 
         disableConcurrentBuilds() 
@@ -33,6 +34,11 @@ pipeline {
         }
 
         stage('Deploy') {
+             when {
+                allOf {
+                    branch 'production'
+                    environment name: 'DEPLOY_TO', value: 'production'
+                }
             input {
                 message "Should we continue the Deploy?"
                 ok "Yes."
