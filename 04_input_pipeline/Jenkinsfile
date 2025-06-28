@@ -39,6 +39,7 @@ pipeline {
                     branch 'production'
                     environment name: 'DEPLOY_TO', value: 'production'
                 }
+             }
             input {
                 message "Should we continue the Deploy?"
                 ok "Yes."
