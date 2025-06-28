@@ -5,7 +5,7 @@ pipeline {
         project = 'Health checks for DB and Apps'
         server  = 'Test'
         authore = 'Mr Krishna'
-        DEPLOY_TO = 'Dev'
+        DEPLOY_TO = 'production'
     }
     options { 
         disableConcurrentBuilds() 
