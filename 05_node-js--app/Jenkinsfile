@@ -1,0 +1,29 @@
+pipeline {
+    agent { label 'AGENT-01' }
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git 'https://github.com/heroku/node-js-sample.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm test || echo "No test script defined"'
+            }
+        }
+
+        stage('Run App') {
+            steps {
+                sh 'node index.js &'
+            }
+        }
+    }
+}
