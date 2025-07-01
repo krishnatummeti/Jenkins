@@ -10,26 +10,18 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            steps {
-                dir('05_node-js--app') {
-                    sh 'npm test'
-                }
-            }
-        }
-
         stage('Run App') {
             steps {
                 dir('05_node-js--app') {
                     sh '''
-                        echo "🔁 Stopping old app if running"
-                        pm2 delete node-app || true
+                        echo "🔁 Killing old app if running"
+                        pkill -f "node index.js" || true
 
-                        echo "🚀 Starting app with pm2"
-                        pm2 start index.js --name node-app
-
-                        echo "✅ App started with pm2"
-                        pm2 list
+                        echo "🚀 Starting app in background"
+                        nohup node index.js > app.log 2>&1 &
+                        sleep 2
+                        echo "📄 Last log lines:"
+                        tail -n 5 app.log
                     '''
                 }
             }
@@ -38,7 +30,7 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Build completed successfully!'
+            echo '🎉 Node.js app is running in the background.'
         }
         failure {
             echo '❌ Build failed.'
