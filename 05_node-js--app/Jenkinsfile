@@ -21,7 +21,10 @@ pipeline {
         stage('Run App') {
             steps {
                 dir('05_node-js--app') {
-                    sh 'nohup node index.js > app.log 2>&1 &'
+                    sh 'nohup node index.js > app.log 2>&1 & echo $! > pid.txt'
+                    sh 'sleep 3'
+                    sh 'cat app.log'
+
                     echo '✅ App started'
                 }
             }
