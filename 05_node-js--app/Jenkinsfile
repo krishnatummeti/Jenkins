@@ -21,9 +21,16 @@ pipeline {
         stage('Run App') {
             steps {
                 dir('05_node-js--app') {
-                    // Start the app and keep it alive
-                    sh 'nohup node index.js > app.log 2>&1 &'
-                    sh 'sleep 2 && tail -n 5 app.log'
+                    sh '''
+                        echo "🔁 Stopping old app if running"
+                        pm2 delete node-app || true
+
+                        echo "🚀 Starting app with pm2"
+                        pm2 start index.js --name node-app
+
+                        echo "✅ App started with pm2"
+                        pm2 list
+                    '''
                 }
             }
         }
