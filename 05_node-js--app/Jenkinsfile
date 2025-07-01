@@ -4,18 +4,15 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                // Go into the folder where the Node.js app is
                 dir('05_node-js--app') {
-                    // Install node modules from package.json
                     sh 'npm install'
                 }
             }
         }
 
-        stage('Test App') {
+        stage('Test') {
             steps {
                 dir('05_node-js--app') {
-                    // Run tests (even if it's just a dummy test)
                     sh 'npm test'
                 }
             }
@@ -24,9 +21,8 @@ pipeline {
         stage('Run App') {
             steps {
                 dir('05_node-js--app') {
-                    // Start the Node.js app in background
                     sh 'nohup node index.js > app.log 2>&1 &'
-                    echo '✅ App is running in the background.'
+                    echo '✅ App started'
                 }
             }
         }
@@ -34,10 +30,10 @@ pipeline {
 
     post {
         success {
-            echo '🎉 Build Successful!'
+            echo '🎉 Build completed successfully!'
         }
         failure {
-            echo '❌ Build Failed.'
+            echo '❌ Build failed.'
         }
     }
 }
