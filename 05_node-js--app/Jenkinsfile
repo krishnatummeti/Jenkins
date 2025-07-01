@@ -21,14 +21,9 @@ pipeline {
         stage('Run App') {
             steps {
                 dir('05_node-js--app') {
-                    sh '''
-                        echo "🔍 Node path: $(which node)"
-                        echo "🔍 Current directory: $(pwd)"
-                        pkill -f "node index.js" || true
-                        nohup /usr/bin/node index.js > app.log 2>&1 &
-                        sleep 3
-                        tail -n 10 app.log
-                    '''
+                    // Start the app and keep it alive
+                    sh 'nohup node index.js > app.log 2>&1 &'
+                    sh 'sleep 2 && tail -n 5 app.log'
                 }
             }
         }
