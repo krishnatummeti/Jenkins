@@ -2,12 +2,6 @@ pipeline {
     agent { label 'AGENT-01' }
 
     stages {
-        stage('Clone Repo') {
-            steps {
-                git 'https://github.com/heroku/node-js-sample.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -16,14 +10,24 @@ pipeline {
 
         stage('Test') {
             steps {
-                sh 'npm test || echo "No test script defined"'
+                sh 'npm test'
             }
         }
 
         stage('Run App') {
             steps {
-                sh 'node index.js &'
+                sh 'nohup node index.js > app.log 2>&1 &'
+                echo 'Node.js app started'
             }
+        }
+    }
+
+    post {
+        success {
+            echo '🎉 Pipeline completed successfully!'
+        }
+        failure {
+            echo '❌ Pipeline failed.'
         }
     }
 }
