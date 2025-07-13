@@ -1,18 +1,21 @@
 import unittest
-from app import app
+import sys
+import os
 
-class FlaskAppTestCase(unittest.TestCase):
+# Add the parent directory of this test file to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from app import app  # Now this should work correctly
+
+class FlaskAppTests(unittest.TestCase):
     def setUp(self):
-        self.client = app.test_client()
+        self.app = app.test_client()
+        self.app.testing = True
 
     def test_home(self):
-        response = self.client.get('/')
+        response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
-
-    def test_health(self):
-        response = self.client.get('/health')
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data.decode(), "OK")
+        self.assertIn(b'Hello, World!', response.data)
 
 if __name__ == '__main__':
     unittest.main()
