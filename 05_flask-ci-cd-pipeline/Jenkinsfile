@@ -2,11 +2,11 @@ pipeline {
     agent { label 'AGENT-01' }
 
     stages {
-
         stage('Install Dependencies') {
             steps {
                 dir('05_flask-ci-cd-pipeline') {
-                    sh 'pip install -r requirements.txt'
+                    sh 'python3 -m pip install --upgrade pip'
+                    sh 'python3 -m pip install -r requirements.txt'
                 }
             }
         }
@@ -24,7 +24,7 @@ pipeline {
                 dir('05_flask-ci-cd-pipeline') {
                     sh '''
                         echo "Deploying Flask App..."
-                        # Add actual deployment command here
+                        # Add real deployment here later
                         echo "Deployment Complete."
                     '''
                 }
