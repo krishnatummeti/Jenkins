@@ -2,37 +2,32 @@ pipeline {
     agent { label 'AGENT-01' }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/krishnatummeti/Jenkins.git'
-            }
-        }
 
         stage('Install Dependencies') {
             steps {
-                sh '''
-                    cd 05_flask-ci-cd-pipeline
-                    pip install -r requirements.txt
-                '''
+                dir('05_flask-ci-cd-pipeline') {
+                    sh 'pip install -r requirements.txt'
+                }
             }
         }
 
-        stage('Run Tests') {
+        stage('Run Unit Tests') {
             steps {
-                sh '''
-                    cd 05_flask-ci-cd-pipeline
-                    python3 test_app.py
-                '''
+                dir('05_flask-ci-cd-pipeline') {
+                    sh 'python3 test_app.py'
+                }
             }
         }
 
         stage('Deploy') {
             steps {
-                sh '''
-                    cd 05_flask-ci-cd-pipeline
-                    echo "Deploying Application..."
-                    echo "Deployment step complete."
-                '''
+                dir('05_flask-ci-cd-pipeline') {
+                    sh '''
+                        echo "Deploying Flask App..."
+                        # Add actual deployment command here
+                        echo "Deployment Complete."
+                    '''
+                }
             }
         }
     }
