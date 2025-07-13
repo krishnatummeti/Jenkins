@@ -10,29 +10,29 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                cd 05_flask-ci-cd-pipeline
-                sh 'pip install -r requirements.txt'
+                sh '''
+                    cd 05_flask-ci-cd-pipeline
+                    pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                script {
-                    sh """
-                        python3 test_app.py
-                    """
-                }
+                sh '''
+                    cd 05_flask-ci-cd-pipeline
+                    python3 test_app.py
+                '''
             }
         }
 
         stage('Deploy') {
             steps {
-                script {
-                    sh """
-                        echo 'Deploying Application...'
-                        echo 'Deployment step complete.'
-                    """
-                }
+                sh '''
+                    cd 05_flask-ci-cd-pipeline
+                    echo "Deploying Application..."
+                    echo "Deployment step complete."
+                '''
             }
         }
     }
