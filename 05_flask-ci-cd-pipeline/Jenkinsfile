@@ -1,0 +1,47 @@
+pipeline {
+    agent { label 'AGENT-01' }
+
+    environment {
+        APP_SERVER = 'devuser@192.168.71.130'  // 🔁 Change to your app server IP
+        APP_DIR = '/home/devuser/flask-app'
+    }
+
+    stages {
+        stage('Clone Repo') {
+            steps {
+                git url: 'https://github.com/techbasehub/flask-hello-ci.git', branch: 'main'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip3 install -r requirements.txt --user'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'python3 test_app.py'
+            }
+        }
+
+        stage('Deploy to App Server') {
+            steps {
+                sh """
+                ssh $APP_SERVER 'rm -rf $APP_DIR && mkdir -p $APP_DIR'
+                scp app.py requirements.txt $APP_SERVER:$APP_DIR
+                ssh $APP_SERVER 'cd $APP_DIR && pip3 install -r requirements.txt --user && nohup python3 app.py &'
+                """
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Flask App Deployed Successfully!'
+        }
+        failure {
+            echo 'Build Failed!'
+        }
+    }
+}
