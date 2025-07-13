@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/your-username/flask-jenkins-project.git'
+                git 'https://github.com/krishnatummeti/Jenkins.git'
             }
         }
 
@@ -16,15 +16,25 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'python3 test_app.py'
+                script {
+                    sh """
+
+                        python3 test_app.py
+
+                    """
+                }
+                
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying Application...'
-                // Add deployment steps here if needed
-            }
+                script {
+                    sh """
+                        echo 'Deploying Application...'
+                        echo 'Deploying Application...'
+                    """
+                }
         }
     }
 }
