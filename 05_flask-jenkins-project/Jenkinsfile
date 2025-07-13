@@ -1,0 +1,56 @@
+pipeline {
+    agent { label 'flask-builder-node' }
+
+    environment {
+        IMAGE_NAME = "flask-ci-cd-demo"
+        CONTAINER_NAME = "flask-app"
+        APP_DIR = "05_flask-jenkins-project"
+    }
+
+    stages {
+        stage('Clone Code') {
+            steps {
+                git 'https://github.com/krishnatummeti/Jenkins.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                dir("${APP_DIR}") {
+                    sh 'pip3 install -r requirements.txt'
+                }
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                dir("${APP_DIR}") {
+                    sh 'python3 -m unittest discover tests'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                dir("${APP_DIR}") {
+                    sh "docker build -t $IMAGE_NAME ."
+                }
+            }
+        }
+
+        stage('Run App in Container') {
+            steps {
+                sh """
+                docker rm -f $CONTAINER_NAME || true
+                docker run -d --name $CONTAINER_NAME -p 5000:5000 $IMAGE_NAME
+                """
+            }
+        }
+    }
+
+    post {
+        always {
+            echo '✅ Pipeline finished.'
+        }
+    }
+}
