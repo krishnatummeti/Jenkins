@@ -4,31 +4,25 @@ pipeline {
     environment {
         IMAGE_NAME = "flask-ci-cd-demo"
         CONTAINER_NAME = "flask-app"
+        PROJECT_DIR = "05_flask-jenkins-project"
     }
 
     stages {
-        stage('Clone Code') {
-            steps {
-                echo 'Code already cloned by Jenkins.'
-                sh 'ls -l'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
-                sh 'python3 -m pip install -r 05_flask-jenkins-project/requirements.txt'
+                sh 'python3 -m pip install -r $PROJECT_DIR/requirements.txt'
             }
         }
 
         stage('Run Unit Tests') {
             steps {
-                sh 'python3 -m unittest discover tests'
+                sh 'python3 -m unittest discover $PROJECT_DIR/tests'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t $IMAGE_NAME ."
+                sh "docker build -t $IMAGE_NAME $PROJECT_DIR"
             }
         }
 
