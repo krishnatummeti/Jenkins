@@ -13,7 +13,6 @@ pipeline {
                 git 'https://github.com/krishnatummeti/Jenkins.git'
             }
         }
-
         stage('Install Dependencies') {
             steps {
                 dir("${APP_DIR}") {
