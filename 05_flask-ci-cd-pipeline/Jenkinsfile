@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git url: 'https://github.com/techbasehub/flask-hello-ci.git', branch: 'main'
+                git url: 'https://github.com/krishnatummeti/Jenkins/tree/f4f028c6166a1b1264bf3bfee847c7188d0efa1d/05_flask-ci-cd-pipeline', branch: 'main'
             }
         }
 
