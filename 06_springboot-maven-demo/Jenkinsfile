@@ -9,7 +9,6 @@ pipeline {
         stage('Build') {
             steps {
                 dir('06_springboot-maven-demo') {
-                    // Build without running tests
                     sh 'mvn -B clean package -DskipTests'
                 }
             }
@@ -18,18 +17,16 @@ pipeline {
         stage('Test') {
             steps {
                 dir('06_springboot-maven-demo') {
-                    // Run tests
                     sh 'mvn test'
-                    // Archive test results from correct location
-                    junit 'target/surefire-reports/*.xml'
                 }
+                // This is the correct place to archive reports
+                junit '06_springboot-maven-demo/target/surefire-reports/*.xml'
             }
         }
 
         stage('Deliver') {
             steps {
                 dir('06_springboot-maven-demo') {
-                    // Run your delivery script
                     sh './jenkins/scripts/deliver.sh'
                 }
             }
