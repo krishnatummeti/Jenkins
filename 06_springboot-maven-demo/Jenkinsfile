@@ -1,14 +1,22 @@
 pipeline {
     agent { label 'AGENT-01' }
 
+    options {
+        skipStagesAfterUnstable()
+    }
+
     stages {
         stage('Build') {
             steps {
-                dir('06_springboot-maven-demo') {
-                    sh 'mvn -B clean package -DskipTests'
+                script {
+                    // Ensure we run Maven inside the project folder where pom.xml exists
+                    dir('06_springboot-maven-demo') {
+                        sh 'mvn -B clean package -DskipTests'
+                    }
                 }
             }
         }
+
         stage('Test') {
             steps {
                 dir('06_springboot-maven-demo') {
@@ -17,10 +25,12 @@ pipeline {
             }
             post {
                 always {
+                    // Archive JUnit XML reports
                     junit '06_springboot-maven-demo/**/target/surefire-reports/*.xml'
                 }
             }
         }
+
         stage('Deliver') {
             steps {
                 dir('06_springboot-maven-demo') {
