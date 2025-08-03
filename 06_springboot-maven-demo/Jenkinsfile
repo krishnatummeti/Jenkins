@@ -19,8 +19,12 @@ pipeline {
                 dir('06_springboot-maven-demo') {
                     sh 'mvn test'
                 }
-                // This is the correct place to archive reports
-                junit '06_springboot-maven-demo/target/surefire-reports/*.xml'
+            }
+            post {
+                always {
+                    // Corrected path so Jenkins finds the test reports
+                    junit '**/target/surefire-reports/*.xml'
+                }
             }
         }
 
