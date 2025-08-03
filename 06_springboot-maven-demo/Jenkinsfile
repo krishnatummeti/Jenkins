@@ -8,11 +8,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    // Ensure we run Maven inside the project folder where pom.xml exists
-                    dir('06_springboot-maven-demo') {
-                        sh 'mvn -B clean package -DskipTests'
-                    }
+                dir('06_springboot-maven-demo') {
+                    // Build without running tests
+                    sh 'mvn -B clean package -DskipTests'
                 }
             }
         }
@@ -20,13 +18,10 @@ pipeline {
         stage('Test') {
             steps {
                 dir('06_springboot-maven-demo') {
+                    // Run tests
                     sh 'mvn test'
-                }
-            }
-            post {
-                always {
-                    // Archive JUnit XML reports
-                    junit '06_springboot-maven-demo/**/target/surefire-reports/*.xml'
+                    // Archive test results from correct location
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
@@ -34,6 +29,7 @@ pipeline {
         stage('Deliver') {
             steps {
                 dir('06_springboot-maven-demo') {
+                    // Run your delivery script
                     sh './jenkins/scripts/deliver.sh'
                 }
             }
