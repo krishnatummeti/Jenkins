@@ -1,25 +1,35 @@
 pipeline {
     agent { label 'AGENT-01' }
 
+    options {
+        skipStagesAfterUnstable()
+    }
+
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -B clean package -DskipTests'
+                dir('06_springboot-maven-demo') {
+                    sh 'mvn -B clean package -DskipTests'
+                }
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                dir('06_springboot-maven-demo') {
+                    sh 'mvn test'
+                }
             }
             post {
                 always {
-                    junit '**/target/surefire-reports/*.xml'
+                    junit '06_springboot-maven-demo/target/surefire-reports/*.xml'
                 }
             }
         }
         stage('Deliver') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
+                dir('06_springboot-maven-demo') {
+                    sh './jenkins/scripts/deliver.sh'
+                }
             }
         }
     }
