@@ -8,28 +8,23 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                dir('06_springboot-maven-demo') {
-                    sh 'mvn -B clean package -DskipTests'
-                }
+                sh 'mvn -B clean package -DskipTests'
             }
         }
         stage('Test') {
             steps {
-                dir('06_springboot-maven-demo') {
-                    sh 'mvn test'
-                }
+                sh 'mvn test'
             }
             post {
                 always {
-                    junit '06_springboot-maven-demo/**/target/surefire-reports/*.xml'
+                    // Look for reports relative to the workspace root
+                    junit '**/target/surefire-reports/*.xml'
                 }
             }
         }
         stage('Deliver') {
             steps {
-                dir('06_springboot-maven-demo') {
-                    sh './jenkins/scripts/deliver.sh'
-                }
+                sh './jenkins/scripts/deliver.sh'
             }
         }
     }
